@@ -25,7 +25,7 @@ user@example~$ ./server -n somevideo.mkv
 For setup output video format use -f flag (ffmpeg format supported)
 
 ```
-user@example~$ ./server -n somevideo.mkv -f webm
+user@example~$ ./server -n somevideo.webm -f webm
 ```
 
 For collect logs to file add flag -l (create new file or replace existed)

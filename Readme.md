@@ -16,12 +16,17 @@ user@example~$ make
 ```
 
 
-If successful you will have built the server binary. Let's get some files to stream!
+If successful you will have built the server binary. For setup file use flag -n!
 
 ```
-user@example~$ ./server somevideo.mkv
+user@example~$ ./server -n somevideo.mkv
 ```
 
+For setup output video format use -f flag (ffmpeg format supported)
+
+```
+user@example~$ ./server -n somevideo.mkv -f webm
+```
 
 This will serve the file somevideo.mkv on all interfaces on port 8080 (so far only configurable in server2.c) in real-time.
 

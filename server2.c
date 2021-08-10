@@ -14,6 +14,8 @@
 #include "publisher.h"
 
 #define BUFFER_SECS 30
+#define NAME_FLAG "-n"
+#define OUTPUT_FORMAT_FLAG "-f"
 
 
 struct ReadInfo {
@@ -31,6 +33,7 @@ struct AcceptInfo {
     struct PublisherContext *pub;
     AVFormatContext *ifmt_ctx;
     const char *out_uri;
+    const char *out_format;
 };
 
 void log_packet(const AVFormatContext *fmt_ctx, const AVPacket *pkt)
@@ -234,6 +237,7 @@ void *accept_thread(void *arg)
 {
     struct AcceptInfo *info = (struct AcceptInfo*) arg;
     const char *out_uri = info->out_uri;
+    const char *out_format = info->out_format;
     char *status;
     char *method, *resource;
     AVIOContext *client;
@@ -331,7 +335,7 @@ void *accept_thread(void *arg)
             continue;
         }
 
-        avformat_alloc_output_context2(&ofmt_ctx, NULL, "matroska", NULL);
+        avformat_alloc_output_context2(&ofmt_ctx, NULL, out_format, NULL);
         printf("allocated new ofmt_ctx: %p\n", ofmt_ctx);
 
         if (!ofmt_ctx) {
@@ -421,6 +425,7 @@ void *write_thread(void *arg)
 
 int main(int argc, char *argv[])
 {
+
     struct ReadInfo rinfo;
     struct AcceptInfo ainfo;
     struct WriteInfo *winfos;
@@ -432,9 +437,20 @@ int main(int argc, char *argv[])
     AVFormatContext *ifmt_ctx = NULL;
 
     rinfo.in_filename = "pipe:0";
-    ainfo.out_uri = "http://0:8080";
+    ainfo.out_uri = "http://0:8080/";
+    ainfo.out_format = "matroska";
+
     if (argc > 1) {
-        rinfo.in_filename = argv[1];
+        for (int i = 1; i < argc - 1; i++) {
+            char *flag = argv[i];
+            char *val = argv[i + 1];
+            if(strcmp(flag, NAME_FLAG) == 0) {
+                rinfo.in_filename = val;
+            }
+            else if (strcmp(flag, OUTPUT_FORMAT_FLAG) == 0) {
+                ainfo.out_format = val;
+            }
+        }
     }
 
     av_register_all();

@@ -16,6 +16,7 @@
 #define BUFFER_SECS 30
 #define NAME_FLAG "-n"
 #define OUTPUT_FORMAT_FLAG "-f"
+#define LOG_FILE_NAME "-l"
 
 
 struct ReadInfo {
@@ -441,6 +442,10 @@ int main(int argc, char *argv[])
     ainfo.out_format = "matroska";
 
     if (argc > 1) {
+        if (argc % 2 == 0) {
+            fprintf(stderr, "main: Wrong argument list size\n");
+            return 1;
+        }
         for (int i = 1; i < argc - 1; i++) {
             char *flag = argv[i];
             char *val = argv[i + 1];
@@ -449,6 +454,10 @@ int main(int argc, char *argv[])
             }
             else if (strcmp(flag, OUTPUT_FORMAT_FLAG) == 0) {
                 ainfo.out_format = val;
+            }
+            else if (strcmp(flag, LOG_FILE_NAME) == 0) {
+                freopen(val, "w+", stdout);
+                freopen(val, "w+", stderr);
             }
         }
     }

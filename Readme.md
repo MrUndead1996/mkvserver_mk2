@@ -28,6 +28,12 @@ For setup output video format use -f flag (ffmpeg format supported)
 user@example~$ ./server -n somevideo.mkv -f webm
 ```
 
+For collect logs to file add flag -l (create new file or replace existed)
+
+```
+user@example~$ ./server -l logs.txt
+```
+
 This will serve the file somevideo.mkv on all interfaces on port 8080 (so far only configurable in server2.c) in real-time.
 
 You can also use stdin from a live feed for example:

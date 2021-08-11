@@ -28,6 +28,18 @@ For setup output video format use -f flag (ffmpeg format supported)
 user@example~$ ./server -n somevideo.webm -f webm
 ```
 
+For specify output port use flag -p
+
+```
+user@example~$ ./server -p 8080
+```
+
+For specify output address use flag -o
+
+```
+user@example~$ ./server -o http://localhost:8080
+```
+
 For collect logs to file add flag -l (create new file or replace existed)
 
 ```

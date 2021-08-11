@@ -16,7 +16,9 @@
 #define BUFFER_SECS 30
 #define NAME_FLAG "-n"
 #define OUTPUT_FORMAT_FLAG "-f"
-#define LOG_FILE_NAME "-l"
+#define LOG_FILE_NAME_FLAG "-l"
+#define PORT_FLAG "-p"
+#define OUTPUT_ADDR_FLAG "-o"
 
 
 struct ReadInfo {
@@ -455,9 +457,20 @@ int main(int argc, char *argv[])
             else if (strcmp(flag, OUTPUT_FORMAT_FLAG) == 0) {
                 ainfo.out_format = val;
             }
-            else if (strcmp(flag, LOG_FILE_NAME) == 0) {
+            else if (strcmp(flag, LOG_FILE_NAME_FLAG) == 0) {
                 freopen(val, "w+", stdout);
                 freopen(val, "w+", stderr);
+            }
+            else if (strcmp(flag, PORT_FLAG) == 0) {
+                printf("Port set: %s", val);
+                char *adr = "http://0:";
+                char host[sizeof(adr) + sizeof(val) + 1];
+                strcpy(host, adr);
+                strcat(host, val);
+                ainfo.out_uri = host;
+            }
+            else if (strcmp(flag, OUTPUT_ADDR_FLAG) == 0) {
+                ainfo.out_uri = val;
             }
         }
     }
